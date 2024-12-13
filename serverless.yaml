@@ -1,0 +1,39 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: benbeejammin
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: benbeejammin
+service: benbeejammin-graphql-api
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    MONGODB_URI: mongodb+srv://benbrechter3:W2O308Q15ALz6NOY@benbeejammin.7e5q1.mongodb.net/test
+
+functions:
+  graphql:
+    handler: server.graphqlHandler
+    events:
+      - httpApi:
+          path: /graphql
+          method: POST
+      - httpApi:
+          path: /graphql
+          method: GET
+    timeout: 45
+    memorySize: 512
+
+plugins:
+  - serverless-offline
+
+package:
+  individually: true
+  patterns:
+    - '!.git/**'
+    - '!.gitignore'
+    - '!README.md'
+    - '!package-lock.json'
+        
+    
